@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מיפוי ארגוני צעירים – גליל מזרחי ומערבי</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.7;
+        }
+
+        .header {
+            background: #fff;
+            padding: 30px 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .header img {
+            max-width: 420px;
+            width: 100%;
+            height: auto;
+        }
+
+        .intro {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 30px 40px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            font-size: 16px;
+            line-height: 1.9;
+            color: #34495e;
+        }
+
+        .intro p { margin-bottom: 14px; }
+        .intro p:last-child { margin-bottom: 0; }
+
+        .filters {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 24px 40px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .filters h3 {
+            margin-bottom: 14px;
+            font-size: 18px;
+            color: #1a3a5c;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: flex-start;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .filter-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .filter-group select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #dde3ea;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+            background: #fff;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .filter-group select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .results-count {
+            max-width: 900px;
+            margin: 16px auto 8px;
+            padding: 0 40px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        .cards {
+            max-width: 900px;
+            margin: 10px auto 40px;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px 28px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: box-shadow 0.2s;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            gap: 12px;
+        }
+
+        .card-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a3a5c;
+        }
+
+        .card-location {
+            font-size: 13px;
+            color: #7f8c8d;
+            flex-shrink: 0;
+            text-align: left;
+            max-width: 200px;
+        }
+
+        .card-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .cat-tag {
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .cat-settlement   { background: #2980b9; }
+        .cat-education     { background: #27ae60; }
+        .cat-emergency     { background: #e74c3c; }
+        .cat-general       { background: #95a5a6; }
+        .cat-leadership    { background: #8e44ad; }
+        .cat-community     { background: #e67e22; }
+        .cat-employment    { background: #16a085; }
+
+        .card-activity {
+            font-size: 14px;
+            color: #555;
+            white-space: pre-line;
+        }
+
+        .card-contact {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #7f8c8d;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #95a5a6;
+            font-size: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .header { padding: 20px; }
+            .header img { max-width: 280px; }
+            .intro, .filters { padding: 20px; margin: 16px 12px; }
+            .cards { padding: 0 12px; }
+            .card { padding: 18px; }
+            .filter-row { flex-direction: column; gap: 12px; }
+            .card-header { flex-direction: column; }
+            .card-location { max-width: none; text-align: right; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <img src="לוגו מרכז הידע חדש עם גליל מערבי - רקע לבן.png" alt="מרכז ידע אזורי גליל מזרחי | מערבי">
+</div>
+
+<div class="intro">
+    <p>להלן מיפוי ה"שחקנים" בתחום הצעירים במרחב הגליל המזרחי והמערבי. הנתונים שלהלן מתבססים על מיפוי שנערך עבור קרן אדמונד דה רוטשילד וקרן רש"י בפברואר 2025.</p>
+    <p>במיפוי מופיעים ארגונים מתחום הפילנתרופיה, החברה האזרחית, המגזר השלישי, העמותות והגופים הממשלתיים והם מחולקים הן על-פי אזורי הרשויות והן על פי הנושאים בהם עוסקים (קהילה, תעסוקה, חינוך וכיוצא בזה).</p>
+    <p>ניתן לבחור את האזור המבוקש ולראות מה מתקיים בו בכל אחד מהתחומים או לחילופין לבדוק את התחומים בראייה כוללת של כלל הגליל.</p>
+    <p>ארגונים שפועלים רוחבית יופיעו בשמם וארגונים הפועלים ברשויות מסוימות, יופיעו עם ציון הרשויות בהן הם פועלים.</p>
+</div>
+
+<div class="filters">
+    <h3>סינון תוצאות</h3>
+    <div class="filter-row">
+        <div class="filter-group">
+            <label for="filter-region">אזור</label>
+            <select id="filter-region">
+                <option value="">כל הגליל</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="filter-category">תחום</label>
+            <select id="filter-category">
+                <option value="">כל התחומים</option>
+                <option value="cat_settlement">התיישבות וציונות</option>
+                <option value="cat_education">חינוך והשכלה</option>
+                <option value="cat_emergency">חירום וחוסן</option>
+                <option value="cat_general">כללי</option>
+                <option value="cat_leadership">מנהיגות צעירה</option>
+                <option value="cat_community">קהילה וחברה</option>
+                <option value="cat_employment">תעסוקה ויזמות</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<div class="results-count" id="results-count"></div>
+
+<div class="cards" id="cards-container"></div>
+
+<script src="data.js"></script>
+<script>
+const categoryMap = {
+    cat_settlement: { label: 'התיישבות וציונות', cls: 'cat-settlement' },
+    cat_education:  { label: 'חינוך והשכלה',     cls: 'cat-education' },
+    cat_emergency:  { label: 'חירום וחוסן',       cls: 'cat-emergency' },
+    cat_general:    { label: 'כללי',              cls: 'cat-general' },
+    cat_leadership: { label: 'מנהיגות צעירה',     cls: 'cat-leadership' },
+    cat_community:  { label: 'קהילה וחברה',       cls: 'cat-community' },
+    cat_employment: { label: 'תעסוקה ויזמות',     cls: 'cat-employment' }
+};
+
+const catKeys = Object.keys(categoryMap);
+
+function getLocations() {
+    const locs = new Set();
+    organizationsData.forEach(org => {
+        if (org.locations) {
+            org.locations.split(',').forEach(l => {
+                const t = l.trim();
+                if (t) locs.add(t);
+            });
+        }
+    });
+    return [...locs].sort((a, b) => a.localeCompare(b, 'he'));
+}
+
+function populateRegionFilter() {
+    const select = document.getElementById('filter-region');
+    getLocations().forEach(loc => {
+        const opt = document.createElement('option');
+        opt.value = loc;
+        opt.textContent = loc;
+        select.appendChild(opt);
+    });
+}
+
+function renderCards() {
+    const region = document.getElementById('filter-region').value;
+    const category = document.getElementById('filter-category').value;
+    const container = document.getElementById('cards-container');
+    const countEl = document.getElementById('results-count');
+
+    let filtered = organizationsData.filter(org => {
+        if (category && !org[category]) return false;
+        if (region) {
+            if (!org.locations) return true;
+            const orgLocs = org.locations.split(',').map(l => l.trim());
+            if (!orgLocs.some(l => l.includes(region) || region.includes(l))) return false;
+        }
+        return true;
+    });
+
+    countEl.textContent = `מציג ${filtered.length} ארגונים`;
+
+    if (filtered.length === 0) {
+        container.innerHTML = '<div class="no-results">לא נמצאו ארגונים התואמים את הסינון</div>';
+        return;
+    }
+
+    container.innerHTML = filtered.map(org => {
+        const cats = catKeys
+            .filter(k => org[k])
+            .map(k => `<span class="cat-tag ${categoryMap[k].cls}">${categoryMap[k].label}</span>`)
+            .join('');
+
+        const locationText = org.locations ? org.locations : 'רוחבי';
+
+        const activity = org.activity || '';
+        const description = org.description || '';
+        const text = activity || description;
+
+        let contactHtml = '';
+        if (org.contact || org.phone) {
+            const parts = [];
+            if (org.contact) parts.push(org.contact);
+            if (org.phone) parts.push(org.phone);
+            contactHtml = `<div class="card-contact">${parts.join(' | ')}</div>`;
+        }
+
+        return `
+        <div class="card">
+            <div class="card-header">
+                <div class="card-name">${org.name}</div>
+                <div class="card-location">${locationText}</div>
+            </div>
+            <div class="card-categories">${cats}</div>
+            ${text ? `<div class="card-activity">${escapeHtml(text)}</div>` : ''}
+            ${contactHtml}
+        </div>`;
+    }).join('');
+}
+
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+populateRegionFilter();
+renderCards();
+
+document.getElementById('filter-region').addEventListener('change', renderCards);
+document.getElementById('filter-category').addEventListener('change', renderCards);
+</script>
+</body>
+</html>
